@@ -1,0 +1,392 @@
+R1
+Ena
+Conf t
+Host R1
+Line con 0
+Pass cisco
+Login
+Exit
+Line vty 0 4
+Login
+Exit
+Service pass #tab
+Enable secret class
+Int g0/0 
+Ip add 192.168.101.129 255.255.255.252
+No shut
+Exit
+Int g0/2
+Ip add 192.168.100.1 255.255.255.224
+No shut
+Exit
+Router ospf 1
+Network 192.168.100.0  0.0.0.31 area 0
+Network 192.168.101.128  0.0.0.3 area 0
+Passive-interface g0/2
+End
+Copy run start
+
+R2
+Ena
+Conf t
+Host R2
+Line con 0
+Pass cisco
+Login
+Exit
+Line vty 0 4
+Pass cisco
+Login
+Exit
+Service pass #tab
+Enable secret class 
+
+Int g0/0
+Ip add 192.168.101.130 255.255.255.252
+No shut
+Exit
+
+Int g0/1
+Ip add 192.168.101.134 255.255.255.252
+No shut
+Exit
+
+Int g0/2
+Ip add 192.168.101.141 255.255.255.252
+No shut
+Exit
+
+Router ospf 1
+Network 192.168.101.128  0.0.0.3 area 0
+Network 192.168.101.132 0.0.0.3 area 0
+Network 192.168.101.140  0.0.0.3 area 0
+End
+Copy run start
+
+R3
+Ena
+Conf t
+Host R3
+Line con 0
+Pass cisco
+Login
+Exit
+Line vty 0 4
+Pass cisco
+Login exit
+Service pass #tab
+Enable secret class
+
+Int g0/0
+Ip add 192.168.100.129  255.255.255.240
+No shut
+Exit
+
+Int g0/1
+Ip add 192.168.101.137 255.255.255.252
+No shut
+Exit
+
+Int g0/2
+Ip add 192.168.101.133 255.255.255.252
+No shut
+Exit
+
+Router ospf 1
+Network 192.168.101.128  0.0.0.3 area 0
+Network 192.168.101.132  0.0.0.3 area 0
+Network 192.168.101.136  0.0.0.3 area 0
+Network 192.168.100.128  0.0.0.3 area 0
+Passive-interface g0/0
+End
+Copy run start
+
+R4
+Ena
+Conf t
+Host R4
+Line con 0
+Pass cisco
+Login
+Exit
+Line vty 0 4
+Pass cisco
+Login exit
+Service pass #tab
+Enable secret class
+
+Int g0/0
+Ip add 192.168.101.145 255.255.255.252 
+No shut
+Exit
+
+Int g0/1
+Ip add 192.168.101.138 255.255.255.252
+No shut
+Exit
+
+Int g0/2
+Ip add 192.168.101.142 255.255.255.252
+No shut
+Exit
+
+Router ospf 1
+Network 192.168.101.136 0.0.0.3 area 0
+Network 192.168.101.140 0.0.0.3 area 0
+Network 192.168.101.144 0.0.0.3 area 0
+Exit
+Int loopback 0
+Ip add 209.15.38.125 255.255.255.248
+No shut
+Ip route 0.0.0.0 0.0.0.0 loopback
+Router ospf 1
+Default-information originate
+End
+Copy run start
+
+R5
+Ena
+Conf t
+Host R5
+Line con 0
+Pass cisco
+Login
+Exit
+Line vty 0 4
+Pass cisco
+Login exit
+Service pass #tab
+Enable secret class
+
+Int g0/0 
+ip add 192.168.101.146 255.255.255.252
+no shut
+exit
+
+int g0/1.200
+encapsulation dot1Q 200
+ip add 192.168.101.1 255.255.255.224
+exit
+
+int g0/1.300
+encapsulation dot1Q 300 
+ip add 192.168.101.33 255.255.255.240
+exit
+
+int g0/1.400
+encapsulation dot1Q 400
+ip add 192.168.101.49 255.255.255.240
+exit
+
+int g0/1.1 
+no shut
+exit
+
+router ospf 1
+network 192.168.101.144  0.0.0.3 area 0
+network 192.168.101.0  0.0.0.31 area 0
+network 192.168.101.32  0.0.0.15 area 0
+network 192.168.101.48  0.0.0.15 area 0
+passive-interface g0/1
+passive-interface g0/1.1
+passive-interface g0/1.200
+passive-interface g0/1.300
+passive-interface g0/1.400
+end
+copy run start
+
+
+S1
+Ena
+Conf t
+Host S1
+Line con 0
+Pass cisco
+Login
+Exit
+Line vty 0 4
+Pass cisco
+Login exit
+Service pass #tab
+Enable secret class
+
+Int vlan 1
+Ip add 192.168.100.30 255.255.255.224 
+No shut
+End
+Copy run start
+
+S2
+Ena
+Conf t
+Host R5
+Line con 0
+Pass cisco
+Login
+Exit
+Line vty 0 4
+Pass cisco
+Login exit
+Service pass #tab
+Enable secret class
+
+Int vlan 1
+Ip add 192.168.100.142 255.255.255.240
+No shut
+End
+Copy run start
+
+S3
+Ena
+Conf t
+Host S3
+Line con 0
+Pass cisco
+Login
+Exit
+Line vty 0 4
+Pass cisco
+Login exit
+Service pass #tab
+Enable secret class
+
+Vlan 200
+Name VLAN0200
+Vlan 300
+Name VLAN0300
+Vlan 400
+Name VLAN0400
+Exit
+
+Int fa0/2
+Sw mode acc
+Sw mode tr
+Exit
+
+Int fa0/3
+Sw mode acc
+Sw acc vlan 200
+Exit
+
+Int fa0/4
+Sw mode acc
+Sw acc vlan 300
+Exit
+
+Int fa0/5
+Sw mode acc
+Sw acc vlan 400
+End
+Copy run start
+
+S4
+Ena
+Conf t
+Host R5
+Line con 0
+Pass cisco
+Login
+Exit
+Line vty 0 4
+Pass cisco
+Login exit
+Service pass #tab
+Enable secret class
+
+Vlan 200
+Name VLAN0200
+Vlan 300
+Name VLAN0300
+Vlan 400
+Name VLAN0400
+Exit
+
+Int fa0/1
+Sw mode acc 
+Sw mode tr
+Exit
+ 
+Int fa0/2
+Sw mode acc 
+Sw mode tr
+Exit
+
+Int fa0/4
+Sw mode acc
+Sw acc vlan 200
+Exit
+
+Int fa0/5
+Sw mode acc
+Sw acc vlan 300
+Exit
+
+Int fa0/6
+Sw mode acc
+Sw acc vlan 400
+End
+Copy run start
+
+Pc1
+ip add 192.168.100.2
+sub 255.255.255.224
+gateway 192.168.100.1
+
+pc2 
+ip add 192.168.100.3
+sub 255.255.255.224
+gateway 192.168.100.1
+
+pc3
+ip add 192.168.100.4
+sub 255.255.255.224
+gateway 192.168.100.1
+
+pc4
+ip add 192.168.100.5
+sub 255.255.255.224
+gateway 192.168.100.1
+
+pc5
+ip add 192.168.101.3
+sub 255.255.255.224
+gateway 192.168.100.1
+
+pc6
+ip add 192.168.101.35
+sub 255.255.255.240
+gateway 192.168.101.33
+
+pc7
+ip add 192.168.101.51
+sub 255.255.255.240
+gateway 192.168.101.49
+
+pc8
+ip add 192.168.101.2
+sub 255.255.255.224
+gateway 192.168.101.1
+
+pc9
+ip add 192.168.101.34
+sub 255.255.255.240
+gateway 192.168.101.33
+
+pc10
+ip add 192.168.101.50
+sub 255.255.255.240
+gateway 192.168.101.49
+
+Server1
+ip add 192.168.100.130
+sub 255.255.255.240
+gateway 192.168.100.129
+
+Server2	
+ip add 192.168.100.131
+sub 255.255.255.240
+gateway 192.168.100.129
+
+
+
+
